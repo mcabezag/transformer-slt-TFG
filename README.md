@@ -79,3 +79,13 @@ Please cite the paper below if you found the resources in this repository useful
   year={2020}
 } 
 ```
+# TFG
+Obtener un modelo de datos siguiendo los pasos anteriores y copiar el fichero resultante dentro de onmt/bin.
+Modificar el fichero config_file.json con la ruta del modelo.
+
+En la consola:
+cd onmt/bin
+export FLASK_APP=tfg_main.py
+flask run
+
+Abrir el navegador en la siguiente ruta: http://127.0.0.1:5000/translator/
