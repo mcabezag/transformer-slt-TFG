@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Traductor glosa-texto</h1>
+
+    <a href="{{ url_for('get_models') }}">
+        Get models
+    </a>
+    <br/>
+    {% if models %}
+        <p>{{ models }}</p>
+    {% endif %}
+    <br/>
+
+    <br/>
+    <form method="post" action="{{ url_for('clone_model', model_id=1500) }}">
+        <label>Timeout</label>
+        <input name="timeout" type="number">
+        <label>Opt</label>
+        <input name="opt" type="text">
+        <button type="summit">Clone model</button>
+    </form>
+    <br/>
+    {% if clone_model %}
+        <p>{{ clone_model }}</p>
+    {% endif %}
+    <br/>
+
+    <br/>
+    <form method="post" action="{{ url_for('translate') }}">
+        <label>Text to translate</label>
+        <input name="text_to_translate" type="text">
+        <button type="summit">Translate</button>
+    </form>
+    <br/>
+    {% if translated_text %}
+        <p>{{ translated_text }}</p>
+    {% endif %}
+    <br/>
+
+{% endblock %}
