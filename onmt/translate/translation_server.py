@@ -82,7 +82,7 @@ class TranslationServer(object):
         with open(self.config_file) as f:
             self.confs = json.load(f)
 
-        self.models_root = self.confs.get('models_root', './available_models')
+        self.models_root = self.confs.get('models_root', '/available_models')
         for i, conf in enumerate(self.confs["models"]):
             if "models" not in conf:
                 if "model" in conf:
@@ -124,7 +124,7 @@ class TranslationServer(object):
         """Load a model given a set of options
         """
         model_id = self.preload_model(opt, model_id=model_id, **model_kwargs)
-        load_time = self.models[model_id].load_time
+        load_time = 100000 # self.models[model_id].load_time todo averiguar por qué no tengo valor de esto
 
         return model_id, load_time
 
@@ -205,7 +205,7 @@ class ServerModel(object):
 
     def __init__(self, opt, model_id, preprocess_opt=None, tokenizer_opt=None,
                  postprocess_opt=None, load=False, timeout=-1,
-                 on_timeout="to_cpu", model_root="./"):
+                 on_timeout="to_cpu", model_root="/"):
         self.model_root = model_root
         self.opt = self.parse_opt(opt)
 

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="central_blocks">
+   <div class="form_to_translate">
+        <form method="post" action="traducir" id="translation_form">
+        <p class="label">Text to translate</p>
+        <p><textarea class="source" name ="text_to_translate" placeholder="Write sth..."></textarea></p>
+        <input id="enviar" type="button" value="TRANSLATE" class="btn">
+        </form>
+   </div>
+
+    <div class="translated_form">
+        <div class="output">
+            <p class="label">Text translated</p>
+            <p>
+                <textarea class="result" readonly name ="text_to_translate" placeholder="Translated text..."></textarea>
+                <textarea class="information" readonly name ="information" placeholder="Additional info..."></textarea>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

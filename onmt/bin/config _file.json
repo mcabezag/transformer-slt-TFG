@@ -1,0 +1,17 @@
+{
+	"data": "hola",
+	"models": [
+		{
+		"data_in":1234,
+   		"model": "/home/pedro/marina/tfg/transformer-slt-TFG2/onmt/bin/model_step_1500.pt",
+		"id":  1500,
+		"load_time": 100000,
+		"opt":
+			{
+			"models": [
+			  "/bin/model_step_1500.pt"
+				]
+			}
+		}
+		]
+}

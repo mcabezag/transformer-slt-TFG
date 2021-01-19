@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 import configargparse
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint, render_template
+from flask_bootstrap import Bootstrap
 from waitress import serve
 from onmt.translate import TranslationServer, ServerModelError
 import logging
@@ -12,13 +13,14 @@ STATUS_ERROR = "error"
 
 
 def start(config_file,
-          url_root="./translator",
+          url_root="/translator",
           host="0.0.0.0",
           port=5000,
           debug=False):
     def prefix_route(route_function, prefix='', mask='{0}{1}'):
         def newroute(route, *args, **kwargs):
             return route_function(mask.format(prefix, route), *args, **kwargs)
+
         return newroute
 
     if debug:
@@ -33,13 +35,20 @@ def start(config_file,
 
     app = Flask(__name__)
     app.route = prefix_route(app.route, url_root)
+
     translation_server = TranslationServer()
     translation_server.start(config_file)
+
+    @app.route('/', methods=['GET'])
+    @app.route('/index', methods=['GET'])
+    def index():
+        return render_template('main/index.html')
 
     @app.route('/models', methods=['GET'])
     def get_models():
         out = translation_server.list_models()
-        return jsonify(out)
+        print('RESPUESTA' + jsonify(out).get_data(as_text=True))
+        return render_template('main/index.html', models=jsonify(out).get_data(as_text=True))
 
     @app.route('/health', methods=['GET'])
     def health():
@@ -50,13 +59,14 @@ def start(config_file,
     @app.route('/clone_model/<int:model_id>', methods=['POST'])
     def clone_model(model_id):
         out = {}
-        data = request.get_json(force=True)
+        data = request.get_json(force=True)  # todo devuelve None
         timeout = -1
-        if 'timeout' in data:
-            timeout = data['timeout']
-            del data['timeout']
+        # if 'timeout' in data:
+        #     timeout = data['timeout']
+        #     del data['timeout']
 
-        opt = data.get('opt', None)
+        # opt = data.get('opt', None)
+        opt = None
         try:
             model_id, load_time = translation_server.clone_model(
                 model_id, opt, timeout)
@@ -68,7 +78,8 @@ def start(config_file,
             out['model_id'] = model_id
             out['load_time'] = load_time
 
-        return jsonify(out)
+        print('RESPUESTA' + jsonify(out).get_data(as_text=True))
+        return render_template('main/index.html', clone_model=jsonify(out).get_data(as_text=True))
 
     @app.route('/unload_model/<int:model_id>', methods=['GET'])
     def unload_model(model_id):
@@ -85,7 +96,11 @@ def start(config_file,
 
     @app.route('/translate', methods=['POST'])
     def translate():
-        inputs = request.get_json(force=True)
+        # '[{"id": 1500, "src": "WIND"}]'
+        inputs = [{}]  # request.get_json(force=True)
+        text = request.form["text_to_translate"].upper()
+        print("INPUT: " + text)
+        inputs[0] = {"id": 1500, "src": text}
         if debug:
             logger.info(inputs)
         out = {}
@@ -107,7 +122,8 @@ def start(config_file,
             out['status'] = STATUS_ERROR
         if debug:
             logger.info(out)
-        return jsonify(out)
+        print('RESPUESTA' + jsonify(out).get_data(as_text=True))
+        return render_template('main/index.html', translated_text=jsonify(out).get_data(as_text=True))
 
     @app.route('/to_cpu/<int:model_id>', methods=['GET'])
     def to_cpu(model_id):
@@ -125,7 +141,8 @@ def start(config_file,
         out['status'] = STATUS_OK
         return jsonify(out)
 
-    serve(app, host=host, port=port)
+    return app
+    # serve(app, host=host, port=port)
 
 
 def _get_parser():
