@@ -98,7 +98,9 @@ def start(config_file,
     def translate():
         # '[{"id": 1500, "src": "WIND"}]'
         inputs = [{}]  # request.get_json(force=True)
-        inputs[0] = {"id": 1500, "src": "WIND"}
+        text = request.form["text_to_translate"].upper()
+        print("INPUT: " + text)
+        inputs[0] = {"id": 1500, "src": text}
         if debug:
             logger.info(inputs)
         out = {}

@@ -4,17 +4,24 @@
         Trabajo fin de Grado
     {% endblock %}
 
-    {% block content %}
-        <div class="container">
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-info" role="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+    {% block styles %}
+        <link rel="stylesheet" href="{{url_for('.static', filename='main.css')}}">
+    {% endblock %}
 
-            {# application content needs to be provided in the app_content block #}
-            {% block app_content %}{% endblock %}
-         </div>
+    {% block content %}
+        <h1> Gloss to text translator</h1>
+        <h3> Project in progress</h3>
+
+        <br/>
+
+        <ul>
+            <li><a href="default.asp">Main</a></li>
+            <li><a href="news.asp">About the TFG</a></li>
+            <li><a href="contact.asp">Contact</a></li>
+        </ul>
+
+        <br/>
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
     {% endblock %}

@@ -1,41 +1,26 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <h1>Traductor glosa-texto</h1>
+{% block app_content %}
 
-    <a href="{{ url_for('get_models') }}">
-        Get models
-    </a>
-    <br/>
-    {% if models %}
-        <p>{{ models }}</p>
-    {% endif %}
-    <br/>
+<div class="central_blocks">
+   <div class="form_to_translate">
+        <form method="post" action="traducir" id="translation_form">
+        <p class="label">Text to translate</p>
+        <p><textarea class="source" name ="text_to_translate" placeholder="Write sth..."></textarea></p>
+        <input id="enviar" type="button" value="TRANSLATE" class="btn">
+        </form>
+   </div>
 
-    <br/>
-    <form method="post" action="{{ url_for('clone_model', model_id=1500) }}">
-        <label>Timeout</label>
-        <input name="timeout" type="number">
-        <label>Opt</label>
-        <input name="opt" type="text">
-        <button type="summit">Clone model</button>
-    </form>
-    <br/>
-    {% if clone_model %}
-        <p>{{ clone_model }}</p>
-    {% endif %}
-    <br/>
+    <div class="translated_form">
+        <div class="output">
+            <p class="label">Text translated</p>
+            <p>
+                <textarea class="result" readonly name ="text_to_translate" placeholder="Translated text..."></textarea>
+                <textarea class="information" readonly name ="information" placeholder="Additional info..."></textarea>
+            </p>
+        </div>
+    </div>
 
-    <br/>
-    <form method="post" action="{{ url_for('translate') }}">
-        <label>Text to translate</label>
-        <input name="text_to_translate" type="text">
-        <button type="summit">Translate</button>
-    </form>
-    <br/>
-    {% if translated_text %}
-        <p>{{ translated_text }}</p>
-    {% endif %}
-    <br/>
+</div>
 
 {% endblock %}
