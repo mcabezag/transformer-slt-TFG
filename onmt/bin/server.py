@@ -122,8 +122,13 @@ def start(config_file,
             out['status'] = STATUS_ERROR
         if debug:
             logger.info(out)
+        translation = str(out[0][0]['tgt'])
+        src = request.form["text_to_translate"]
+        best = out[0][0]['n_best']
+        score = out[0][0]['pred_score']
         print('RESPUESTA' + jsonify(out).get_data(as_text=True))
-        return render_template('main/index.html', translated_text=jsonify(out).get_data(as_text=True))
+        # return render_template('main/index.html', translated_text=jsonify(out).get_data(as_text=True))
+        return render_template('main/index.html', translation=translation, src=src, best=best, score=score)
 
     @app.route('/to_cpu/<int:model_id>', methods=['GET'])
     def to_cpu(model_id):

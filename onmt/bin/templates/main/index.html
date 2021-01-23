@@ -4,10 +4,10 @@
 
 <div class="central_blocks">
    <div class="form_to_translate">
-        <form method="post" action="traducir" id="translation_form">
-        <p class="label">Text to translate</p>
-        <p><textarea class="source" name ="text_to_translate" placeholder="Write sth..."></textarea></p>
-        <input id="enviar" type="button" value="TRANSLATE" class="btn">
+        <form method="post" action="{{url_for('translate')}}" id="translation_form">
+            <p class="label">Text to translate</p>
+            <p><textarea class="source" name ="text_to_translate" placeholder="Write sth...">{% if src %}{{ src }}{% endif %}</textarea></p>
+            <button id="enviar" type="summit" class="btn">TRANSLATE </button>
         </form>
    </div>
 
@@ -15,8 +15,8 @@
         <div class="output">
             <p class="label">Text translated</p>
             <p>
-                <textarea class="result" readonly name ="text_to_translate" placeholder="Translated text..."></textarea>
-                <textarea class="information" readonly name ="information" placeholder="Additional info..."></textarea>
+                <textarea class="result" readonly name ="text_to_translate" placeholder="Translated text...">{% if translation %}{{ translation }}{% endif %}</textarea>
+                <textarea class="information" readonly name ="information" placeholder="Additional info...">{% if score %}Score: {{ score }}{% endif %}</textarea>
             </p>
         </div>
     </div>
