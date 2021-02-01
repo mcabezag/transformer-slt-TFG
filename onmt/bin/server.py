@@ -44,6 +44,10 @@ def start(config_file,
     def index():
         return render_template('main/index.html')
 
+    @app.route('/about', methods=['GET'])
+    def about():
+        return render_template('main/about.html')
+
     @app.route('/models', methods=['GET'])
     def get_models():
         out = translation_server.list_models()
